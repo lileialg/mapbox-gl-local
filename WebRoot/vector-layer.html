@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<title>Display a map</title>
+<meta name='viewport'
+	content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='dist/mapbox-gl-dev.js'></script>
+<link href='dist/mapbox-gl.css' rel='stylesheet' />
+<style>
+body {
+	margin: 0;
+	padding: 0;
+}
+
+#map {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+}
+</style>
+
+<script type="text/javascript">
+	var layers = [
+			{
+				"id" : "background",
+				"type" : "background",
+				"layout" : {
+
+				},
+				"paint" : {
+					"background-color" : {
+						"base" : 1,
+						"stops" : [ [ 11, "hsl(35, 32%, 91%)" ],
+								[ 13, "hsl(35, 12%, 89%)" ] ]
+					}
+				}
+			}, {
+				"interactive" : true,
+				"layout" : {
+					"visibility" : "visible",
+					"line-cap" : "round",
+					"line-join" : "round"
+				},
+				"type" : "line",
+				"source" : "composite",
+				"id" : "id1",
+				"paint" : {
+					"line-width" : {
+						"base" : 3.5,
+						"stops" : [ [ 5, 0.75 ], [ 18, 32 ] ]
+					},
+					"line-color" : "#00ee00"
+				},
+				"source-layer" : "link"
+			}, {
+				"id" : "road-label-medium",
+				"type" : "symbol",
+				"metadata" : {
+					"mapbox:group" : "1444933721429.3076"
+				},
+				"source" : "composite",
+				"source-layer" : "link",
+				"minzoom" : 12,
+				"layout" : {
+					"text-size" : {
+						"base" : 2,
+						"stops" : [ [ 11, 10 ], [ 20, 14 ] ]
+					},
+					"text-max-angle" : 30,
+					"symbol-spacing" : 250,
+					"text-font" : [ "hwxk" ],
+					"symbol-placement" : "line",
+					"text-padding" : 1,
+					"text-rotation-alignment" : "map",
+					"text-field" : "{name}",
+					"text-letter-spacing" : 0.01
+				},
+				"paint" : {
+					"text-color" : "hsl(40, 0%, 0%)",
+					"text-halo-color" : "hsl(0, 0%, 100%)",
+					"text-halo-width" : 1
+				}
+			}
+
+			 ]
+
+	var simple = {
+		"version" : 8,
+		"name" : "Bright",
+		"sources" : {
+			"composite" : {
+				"type" : "vector",
+				"tiles" : [ "http://localhost:8081/link/{z}/{x}/{y}"]
+
+			}
+		},
+		"sprite" : "http://localhost:8080/new-mbg/sprites/sprite",
+		"glyphs" : "http://localhost:8080/new-mbg/glyphs/{fontstack}/{range}.pbf",
+		"layers" : layers
+	};
+</script>
+</head>
+<body>
+
+	<div id='map'></div>
+	<script>
+		var map = new mapboxgl.Map({
+			container : 'map', // container id
+			style : simple, // stylesheet location
+			zoom : 13,
+			center : [ 116.808037, 39.9752 ]
+		});
+	</script>
+
+</body>
+</html>
